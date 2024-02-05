@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to right, #999797, #999797);
+    }
+
+    #container {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 20px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      animation: fadeIn 1s ease-out;
+    }
+
+    #result {
+      font-size: 18px;
+      margin-top: 20px;
+      color: #333;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    #gifContainer {
+      margin-top: 20px;
+    }
+
+    .custom-modal-image {
+      width: 150px;
+      height: 150px;
+    }
+
+    #emoji {
+      display: none;
+      font-size: 36px;
+      margin-top: 10px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    #noButtons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    #noButtons button {
+      margin: 0 10px;
+    }
+  </style>
+  <title>Light Shopping Proposal</title>
+</head>
+<body>
+
+<div id="container">
+  <h2 class="animate__animated animate__fadeInDown" style="color: #008080;">Hey Aditi, will you be my Valentine?❤️</h2>
+  <button onclick="showModal('Yes')" class="animate__animated animate__fadeIn" style="background-color: #FFD700;">Yes</button>
+  <button onclick="showModal('No')" class="animate__animated animate__fadeIn" style="background-color: #FF6347;">No</button>
+  <div id="result" class="animate__animated"></div>
+  <div id="gifContainer">
+    <!-- Image element for the smaller GIF -->
+    <img id="gif" src="https://media1.tenor.com/m/Wn5uO9CVEhYAAAAC/huh-wat.gif" alt="GIF" class="custom-modal-image">
+  </div>
+  <div id="emoji" class="animate__animated"></div>
+</div>
+
+<script>
+  let noCount = 0;
+  let container = document.getElementById('container');
+  let openPopupsCount = 0;
+
+  function showModal(response) {
+    let result = document.getElementById('result');
+    let emoji = document.getElementById('emoji');
+    let gifContainer = document.getElementById('gifContainer');
+
+    // Increment the counter when a modal is triggered
+    openPopupsCount++;
+
+    // Hide the container when a modal is triggered
+    container.style.display = 'none';
+
+    if (response === 'Yes') {
+      // Custom HTML content for the success modal
+      let successModalContent = `
+        <div>
+          <img src="https://gifdb.com/images/high/peach-cat-will-you-be-my-valentine-pwv0x5b3amw0t6u9.webp" alt="GIF" class="custom-modal-image">
+          <p>कई एहसास दूरियों से खामोश हो गए
+तेरी यादों की गलियों में कुछ अल्फाज लिखें
+तेरी किताबों की नजरे हकीकत देखेंगे 
+मैं लिखूंगा वह शाम जो खूबसूरत तेरी निगाहों में❤️</p>
+        </div>
+      `;
+      Swal.fire({
+        html: successModalContent,
+        confirmButtonText: "I love You❤️",
+        customClass: {
+          popup: 'animated fadeInUp' // Apply the fadeInUp animation to the modal
+        },
+        showCloseButton: true
+      }).finally(() => {
+        // Decrement the counter when the modal is closed
+        openPopupsCount--;
+
+        // Show the container when all popups are closed
+        if (openPopupsCount === 0) {
+          container.style.display = 'block';
+        }
+      });
+    } else if (response === 'No') {
+      // Your existing code for the 'No' response remains unchanged
+      noCount++;
+
+      if (noCount < 5) {
+        Swal.fire({
+          icon: 'question',
+          title: 'Are you sure?',
+          text: 'Ek Bar Or Soch Lo Baby Firse?',
+          showCancelButton: true,
+          confirmButtonText: 'No Light',
+          cancelButtonText: 'Love You🤗',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            showModal('No'); // Ask again
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            result.innerText = 'No problem! 😄';
+            emoji.innerText = '🤗';
+          }
+        }).finally(() => {
+          // Decrement the counter when the modal is closed
+          openPopupsCount--;
+
+          // Show the container when all popups are closed
+          if (openPopupsCount === 0) {
+            container.style.display = 'block';
+          }
+        });
+      } else if (noCount === 5) {
+        gifContainer.style.display = 'none';
+
+        Swal.fire({
+          icon: 'info',
+          title: 'Okay, Breaking! Up For 1 Hour',
+          html: 'Listen Now! Ab 1 hour tak mujse bat mt krna😒.<br><strong>BYE!</strong>',
+          confirmButtonText: "What's This Baby🙄", // Add this line to set custom button text
+          showCancelButton: false, // Remove the cancel button
+        }).finally(() => {
+          // Decrement the counter when the modal is closed
+          openPopupsCount--;
+
+          // Show the container when all popups are closed
+          if (openPopupsCount === 0) {
+            container.style.display = 'block';
+          }
+        });
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
